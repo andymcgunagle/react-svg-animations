@@ -1,5 +1,7 @@
 # SVG Animations with Figma and React
 
+- Tutorial: [Make Awesome SVG Animations with CSS // 7 Useful Techniques](https://www.youtube.com/watch?v=UTHgr6NLeEw)
+
 ## 1. Create a small Frame in [Figma](https://www.figma.com/)
 
 - Frame tool shortcut: F
