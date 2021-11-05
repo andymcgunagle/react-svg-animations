@@ -1,0 +1,38 @@
+#topRight,
+#topLeft,
+#bottomLeft,
+#bottomRight {
+  transition: all 1s ease;
+}
+
+/* Start positions */
+#bottomRight {
+  transform: translateX(40%);
+  opacity: 0;
+}
+
+#topLeft {
+  transform: translateX(-40%);
+  opacity: 0;
+}
+
+/* Positions on hover */
+svg:hover #topLeft {
+  transform: translateX(0%);
+  opacity: 1;
+}
+
+svg:hover #topRight {
+  transform: translateY(40%);
+  opacity: 0;
+}
+
+svg:hover #bottomRight {
+  transform: translateX(0%);
+  opacity: 1;
+}
+
+svg:hover #bottomLeft {
+  transform: translateY(-40%);
+  opacity: 0;
+}

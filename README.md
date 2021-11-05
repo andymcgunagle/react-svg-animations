@@ -1,70 +1,112 @@
-# Getting Started with Create React App
+# SVG Animations with Figma and React
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 1. Create a small Frame in [Figma](https://www.figma.com/)
 
-## Available Scripts
+- Frame tool shortcut: F
 
-In the project directory, you can run:
+- Edit W and H in Frame editor in right sidebar.
 
-### `npm start`
+- ~100 x 100 is about right
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## 2. Add a few shapes in their start/finish positions
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- Rectange tool shortcut: R
 
-### `npm test`
+- Ellipse tool shortcut: O
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Hold shift when drawing an ellipse to make a circle.
 
-### `npm run build`
+- Edit the fill of your shapes from the right sidebar.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 3. Rename your frame, shapes, and groups
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- In the left sidebar rename your Frame.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- group shapes of the same type (also group shapes of their own type).
 
-### `npm run eject`
+- Add camelCased names to each group.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- Add camelCased names to each shape.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Group selection shortcut: ⌘G
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- Rename shortcut: ⌘R
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## 4. Export your file as an SVG
 
-## Learn More
+- Select the entire Frame.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Find the Export section in the side panel on the right and choose SVG.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Click the 3 dots and select **Include “id” attribute**.
 
-### Code Splitting
+- Deselect **Show in exports**.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 5. Open file in Visual Studio Code and drop SVG into JSX.
 
-### Analyzing the Bundle Size
+- Convert most of the SVG's attributes into props so the component is quickly customizable and reusable.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```javascript
+import React from 'react';
+import './fourCircles.css';
 
-### Making a Progressive Web App
+export default function FourCircles({ width = 100, height = 100, viewBox = '0 0 100 100', fill = 'none', radiusOfAllCircles = '25', topCirclesFill = '#8569F4', bottomCirclesFill = '#12DFD3', topCirclesFillOpacity = '0.5', bottomCirclesFillOpacity = '0.5' }) {
+  return (
+    <svg width={width} height={height} viewBox={viewBox} fill={fill} xmlns="http://www.w3.org/2000/svg">
+      <g id="fourCircles">
+        <g id="topCircles">
+          <circle id="topRight" cx="63" cy="38" r={radiusOfAllCircles} fill={topCirclesFill} fill-opacity={topCirclesFillOpacity} />
+          <circle id="topLeft" cx="38" cy="38" r={radiusOfAllCircles} fill={topCirclesFill} fill-opacity={topCirclesFillOpacity} />
+        </g>
+        <g id="bottomCircles">
+          <circle id="bottomRight" cx="63" cy="63" r={radiusOfAllCircles} fill={bottomCirclesFill} fill-opacity={bottomCirclesFillOpacity} />
+          <circle id="bottomLeft" cx="38" cy="63" r={radiusOfAllCircles} fill={bottomCirclesFill} fill-opacity={bottomCirclesFillOpacity} />
+        </g>
+      </g>
+    </svg>
+  );
+}
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 6. Add CSS animation with transition and transforms
 
-### Advanced Configuration
+```css
+#topRight,
+#topLeft,
+#bottomLeft,
+#bottomRight {
+  transition: all 1s ease;
+}
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+/* Start positions */
+#bottomRight {
+  transform: translateX(40%);
+  opacity: 0;
+}
 
-### Deployment
+#topLeft {
+  transform: translateX(-40%);
+  opacity: 0;
+}
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+/* Positions on hover */
+svg:hover #topLeft {
+  transform: translateX(0%);
+  opacity: 1;
+}
 
-### `npm run build` fails to minify
+svg:hover #topRight {
+  transform: translateY(40%);
+  opacity: 0;
+}
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+svg:hover #bottomRight {
+  transform: translateX(0%);
+  opacity: 1;
+}
+
+svg:hover #bottomLeft {
+  transform: translateY(-40%);
+  opacity: 0;
+}
+```
